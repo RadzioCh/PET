@@ -1,0 +1,57 @@
+# version: '3.9'
+# services:
+#   apache_php:
+#     image: php:8.3-apache
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     ports:
+#       - "8080:80"
+#     volumes:
+#       - /var/zadanko:/var/www/html
+#     depends_on:
+#       - mysql
+#     restart: unless-stopped
+
+version: '3.9'
+services:
+  apache_php:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - /var/zadanko:/var/www/html
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    environment:
+      - PHP_ENABLE_OPCACHE=yes
+      - PHP_ENABLE_PDO_MYSQL=yes
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: zadanko
+      MYSQL_USER: adm2
+      MYSQL_PASSWORD: adm2
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: adm2
+      PMA_PASSWORD: adm2
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

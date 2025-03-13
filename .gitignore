@@ -1,0 +1,14 @@
+src/Controller
+src/Database/Subscription.php
+src/Database/SubscriptionFactory.php
+src/Database/UserDb.php
+src/Send
+src/Validate
+src/View
+tests
+PoligonLaraver
+subscriptions.txt
+readme.md
+.phpunit.result.cache
+old_index.php
+vendor
