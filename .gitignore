@@ -2,6 +2,7 @@ src/Controller
 src/Database/Subscription.php
 src/Database/SubscriptionFactory.php
 src/Database/UserDb.php
+src/Database/SubscriptionAdapter.php
 src/Send
 src/Validate
 src/View
