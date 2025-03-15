@@ -12,4 +12,4 @@ subscriptions.txt
 readme.md
 .phpunit.result.cache
 old_index.php
-vendor
+vendor/
