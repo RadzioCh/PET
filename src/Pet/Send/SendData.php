@@ -5,12 +5,17 @@ class SendData
 {
     private $patch;
     private $data;
-    private $put;
+    private $customerRequest;
+    private $apiKey;
 
-
-    public function setPut($put)
+    public function setApiKey(string $apiKey): void
     {
-        $this->put = $put;
+        $this->apiKey = $apiKey;
+    }
+
+    public function setCustomerRequest($customerRequest)
+    {
+        $this->customerRequest = $customerRequest;
     }
 
     public function setData(string $data): void
@@ -26,9 +31,13 @@ class SendData
     public function send()
     {
 
-        $customerRequest = (!empty($this->put))?'PUT':'POST';
 
         $curl = curl_init();
+
+        $headers = ['Content-Type: application/json'];
+        if (!empty($this->apiKey)) {
+            $headers[] = 'api_key: ' . $this->apiKey;
+        }
 
             curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://petstore.swagger.io/v2/' . $this->patch,
@@ -38,11 +47,9 @@ class SendData
             CURLOPT_TIMEOUT => 30,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => $customerRequest,
+            CURLOPT_CUSTOMREQUEST => $this->customerRequest,
             CURLOPT_POSTFIELDS =>$this->data,
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
+            CURLOPT_HTTPHEADER => $headers,
             ));
 
             $response = curl_exec($curl);

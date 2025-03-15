@@ -262,7 +262,7 @@ class PetView
                 $petListHtml .= "<td>
                 
                 <a href='index.php?site=update_pet&pet_data=" . json_encode($pet) . "'>Zmień</a>
-                <a href='index.php?site=delete_pet&pet_id=" . $pet['id'] . "'>Usuń</a>
+                <a href='index.php?site=list_pet&action=delete_pet&pet_id=" . $pet['id'] . "'>Usuń</a>
                 
                 </td>";
                 $petListHtml .= "</tr>";

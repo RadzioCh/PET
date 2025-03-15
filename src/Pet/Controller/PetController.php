@@ -62,6 +62,15 @@ class PetController
     {
         switch($this->get['action']) {
 
+            case 'delete_pet':
+                $this->sendData->setCustomerRequest('DELETE');
+                $this->sendData->setPatch('pet/'.$this->get['pet_id']);
+                $this->sendData->setApiKey('apiKey');
+                $response = $this->sendData->send();
+                
+                $data = $this->toResponse($response['http_code'], $response['response']);
+                return $data;
+
             case 'update':
                 $pet = $this->addPetValue();
                 $serializer = SerializerBuilder::create()
@@ -69,18 +78,17 @@ class PetController
                 ->build();
                 $json = $serializer->serialize($pet, 'json');
 
-                $this->sendData->setPut(1);
+                $this->sendData->setCustomerRequest('PUT');
                 $this->sendData->setData($json);
                 $this->sendData->setPatch('pet');
                 $response = $this->sendData->send();
 
-                $data = $this->toResponse($response['http_code']);
+                $data = $this->toResponse($response['http_code'],  $response['response']);
                 return $data;
 
             case 'pet_list':
                 $petListByStatusJson = file_get_contents('https://petstore.swagger.io/v2/pet/findByStatus?status='.$this->post['status']);
                 $data = json_decode($petListByStatusJson, true);
-                dump($data);
                 return $data;
 
             case 'create':
@@ -90,17 +98,18 @@ class PetController
                 ->build();-
                 $json = $serializer->serialize($pet, 'json');
 
+                $this->sendData->setCustomerRequest('POST');
                 $this->sendData->setData($json);
                 $this->sendData->setPatch('pet');
                 $response = $this->sendData->send();
 
-                $data = $this->toResponse($response['http_code']);
+                $data = $this->toResponse($response['http_code'], $response['response']);
 
                 return $data;
         }
     }
 
-    public function toResponse($httpCode)
+    public function toResponse($httpCode, $response)
     {
         switch($httpCode) {
             case '500':
